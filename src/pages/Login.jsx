@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import InputField from '../components/auth/InputField.jsx';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -88,22 +89,25 @@ export default function Login() {
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-5">
-            <div>
-              <label htmlFor="email" className="text-[14px] text-[#111827]">Email</label>
-              <div className="flex items-center gap-3 border border-[#0000001A] bg-[#F3F4F6] py-[13.5px] px-[16px] rounded-[12px]">
-                <input className="bg-transparent w-full outline-none" name="email" type="email" placeholder="email@contoh.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              </div>
-            </div>
-            
-            <div>
-              <div className="flex text-[14px] text-[#111827] justify-between">
-                <label htmlFor="sandi">Kata Sandi</label>
-                <a className="text-[#1A73E8]" href="forgot.html">Lupa kata sandi?</a>
-              </div>
-              <div className="flex items-center gap-3 border border-[#0000001A] bg-[#F3F4F6] py-[13.5px] px-[16px] rounded-[12px]">
-                <input className="bg-transparent w-full outline-none" name="sandi" type="password" placeholder="Masukan kata sandi" value={sandi} onChange={(e) => setSandi(e.target.value)} required />
-              </div>
-            </div>
+            <InputField
+              src="/assets/auth/login/email.svg"
+              label="Email"
+              name="email"
+              type="email"
+              placeholder="email@contoh.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <InputField
+              src="/assets/auth/login/lock.svg"
+              label="Kata Sandi"
+              name="sandi"
+              type="password"
+              placeholder="Masuk kata sandi"
+              value={sandi}
+              onChange={(e) => setSandi(e.target.value)}
+            />
 
             <div className="flex gap-2 text-[14px]">
               <input type="checkbox" name="time_access" checked={isRemember} onChange={(e) => setIsRemember(e.target.checked)} />
