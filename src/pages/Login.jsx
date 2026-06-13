@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import InputField from '../components/auth/InputField.jsx';
+import Logo from '../components/auth/Logo.jsx'
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -56,10 +57,7 @@ export default function Login() {
   return (
     <main className="grid grid-cols-1 md:grid-cols-2 w-full h-screen font-sans">
       <aside className="relative hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
-        <div className="z-10 flex gap-3 items-center">
-            <span className="flex justify-center items-center bg-[#FFFFFF33] rounded-[12px] px-3 py-2 text-[12px] text-white">B</span>
-            <span className="text-[16px] text-white font-medium">BeliMudah</span>
-        </div>
+        {<Logo />}
         <div className="z-10 flex flex-col gap-4">
             <span className="font-bold text-[32px] text-white">Belanja lebih<br />mudah, hidup lebih<br />praktis</span>
             <span className="text-[16px] text-[#FFFFFFB2]">Ribuan produk pilihan dengan harga<br />terbaik, pengiriman cepat, dan<br />pembayaran yang aman.</span>
