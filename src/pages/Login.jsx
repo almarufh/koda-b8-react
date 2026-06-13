@@ -4,6 +4,9 @@ import Logo from '../components/auth/Logo.jsx'
 import ButtonAccount from '../components/auth/ButtonAccount.jsx';
 import HeaderAuth from '../components/auth/HeaderAuth.jsx';
 import Line from '../components/auth/Line.jsx';
+import BannerFooter from '../components/auth/BannerFooter.jsx';
+import Button from '../components/auth/Button.jsx';
+import SyaratKebijakan from '../components/auth/SyaratKebijakan.jsx'
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -65,7 +68,7 @@ export default function Login() {
             <span className="font-bold text-[32px] text-white">Belanja lebih<br />mudah, hidup lebih<br />praktis</span>
             <span className="text-[16px] text-[#FFFFFFB2]">Ribuan produk pilihan dengan harga<br />terbaik, pengiriman cepat, dan<br />pembayaran yang aman.</span>
         </div>
-        <span className="z-10 text-[12px] text-[#FFFFFF66]">© 2026 BeliMudah. Seluruh hak cipta dilindungi.</span>
+        <BannerFooter/>
       </aside>
 
       <aside className="flex p-[10px] md:p-[20%] items-center">
@@ -74,6 +77,7 @@ export default function Login() {
             Header="Masuk ke Akun"
             SubHeader="Belum punya akun?"
             SubHeaderLink="Daftar gratis"
+            Src="/register"
           />}          
           <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
             {<ButtonAccount result="Google"/>}
@@ -108,10 +112,10 @@ export default function Login() {
               <label className="text-[#6B7280]">Ingat saya selama 30 hari</label>
             </div>
 
-            <button type="submit" className="flex bg-[#1A73E8] items-center justify-center gap-2 p-[14px] rounded-[12px]">
-              <span className="text-white text-[16px]">Masuk</span>
-            </button>
+            {<Button src="/assets/auth/login/masuk.svg" action="Masuk" order="2" color="#1A73E8"/>}
           </form>
+            <span class="self-center text-[12px] text-[#6B7280]">🔒 Login aman dengan enkripsi SSL 256-bit</span>
+            {<SyaratKebijakan first="Dengan masuk, kamu menyetujui" last="kami."/>}
         </div>
       </aside>
     </main>
