@@ -6,7 +6,7 @@ function Logo (props) {
         <div className="z-10 flex gap-3 items-center">
             <span 
                 style={color}
-                className="flex justify-center items-center rounded-[12px] px-3 py-2 text-[16px] text-white">B</span>
+                className="flex justify-center items-center rounded-[12px] p-[6px_11px] text-[14px] text-[#FFFFFF]">B</span>
             <span className="text-[16px] text-white">BeliMudah</span>
         </div>
     )
