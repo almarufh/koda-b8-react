@@ -80,7 +80,7 @@ function AsideLeft () {
             Header="Masuk ke Akun"
             SubHeader="Belum punya akun?"
             SubHeaderLink="Daftar gratis"
-            Src="/register"
+            Src="/auth/register"
           />}          
           <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
             {<ButtonAccount result="Google"/>}
@@ -108,6 +108,7 @@ function AsideLeft () {
               placeholder="Masuk kata sandi"
               value={sandi}
               onChange={(e) => setSandi(e.target.value)}
+              show={true}
             />
 
             <div className="flex gap-2 text-[14px]">
