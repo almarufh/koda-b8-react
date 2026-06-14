@@ -23,7 +23,7 @@ function ListLeft (props) {
 
 function AsideLeft () {
     return (
-      <aside className="relative bg-[url(/assets/auth/register/Shopping bags.svg)] bg-cover bg-center hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
+      <aside className="relative bg-[url(/assets/auth/register/Shopping_bags.svg)] bg-cover bg-center hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
         <Logo />
         <div className="z-10 flex flex-col gap-4">
             <span className="font-bold text-[32px] text-white">Bergabung dengan<br />500.000+ pelanggan<br />puas</span>
@@ -46,7 +46,7 @@ function AsideLeft () {
             Header="Buat Akun Baru"
             SubHeader="Sudah punya akun?"
             SubHeaderLink="Masuk di sini"
-            Src="/register"
+            Src="/"
           />}          
           <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
             {<ButtonAccount result="Daftar via Google"/>}
