@@ -7,66 +7,37 @@ import Line from '../components/auth/Line.jsx';
 import BannerFooter from '../components/auth/BannerFooter.jsx';
 import Button from '../components/auth/Button.jsx';
 import SyaratKebijakan from '../components/auth/SyaratKebijakan.jsx'
+import { Link } from 'react-router';
 
 export default function Forgot() {
   const [email, setEmail] = useState('');
-  const [sandi, setSandi] = useState('');
-  const [isRemember, setIsRemember] = useState(false);
 
-  useEffect(() => {
-    const login = localStorage.getItem("userActived");
-    if (login) {
-      const userLogin = JSON.parse(login);
-      if (userLogin.status === true) {
-        if (userLogin.expired) {
-          const now = new Date().getTime();
-          const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-          if (now - userLogin.expired < thirtyDays) {
-            window.location.href = "/old/index.html";
-          } else {
-            localStorage.removeItem("userActived");
-          }
-        } else {
-          window.location.href = "/old/index.html";
-        }
-      }
-    }
-  }, []);
+function List (props) {
+    return (
+        <span className="text-[14px] text-[#FFFFFFCC]">{props.show}</span>
+    )
+}
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const userSaved = localStorage.getItem("users");
-    if (!userSaved) {
-      alert("Akun tidak ditemukan");
-      return;
-    }
-
-    const users = JSON.parse(userSaved);
-    const user = users.find(u => u.email === email && u.password === sandi);
-
-    if (!user) {
-      alert("Email atau kata sandi salah!");
-      return;
-    }
-
-    const userActived = {
-      status: true,
-      email: user.email,
-      ...(isRemember && { expired: new Date().getTime() })
-    };
-
-    localStorage.setItem("userActived", JSON.stringify(userActived));
-    alert("Login Berhasil!");
-    window.location.href = "/old/index.html";
-  };
+function ListRight (props) {
+    return (
+        <li className="flex items-start">
+            <span className="mr-2">•</span>
+            <span>{props.show}</span>
+        </li>
+    )
+}
 
 function AsideLeft () {
     return (
-      <aside className="relative bg-[url(/assets/auth/login/Shopping.svg)] bg-cover bg-center hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
+      <aside className="relative bg-[url(/assets/auth/forgot/Security.svg)] bg-cover bg-center hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
         {<Logo />}
         <div className="z-10 flex flex-col gap-4">
-            <span className="font-bold text-[32px] text-white">Belanja lebih<br />mudah, hidup lebih<br />praktis</span>
-            <span className="text-[16px] text-[#FFFFFFB2]">Ribuan produk pilihan dengan harga<br />terbaik, pengiriman cepat, dan<br />pembayaran yang aman.</span>
+            <span className="flex justify-center items-center bg-[#FFFFFF1A] rounded-[12px] w-fit h-fit px-3 py-2 text-[12px] text-[#FFFFFF]">🔐</span>
+            <span className="font-bold text-[32px] text-white">Akun kamu aman<br />bersama kami</span>
+            <span className="text-[16px] text-[#FFFFFFB2]">Kami menggunakan enkripsi tingkat militer<br/>untuk menjaga keamanan data dan transaksimu.</span>
+            <List show="🔒 Enkripsi SSL 256-bit"/>
+            <List show="🛡️ Perlindungan data pribadi"/>
+            <List show="📧 Verifikasi dua langkah"/>
         </div>
         <BannerFooter/>
       </aside>
@@ -78,48 +49,44 @@ function AsideLeft () {
         <div className="flex flex-col w-full gap-8 m-auto">
           {<HeaderAuth
             Header="Masuk ke Akun"
-            SubHeader="Belum punya akun?"
-            SubHeaderLink="Daftar gratis"
-            Src="/auth/register"
-          />}          
-          <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
-            {<ButtonAccount result="Google"/>}
-            {<ButtonAccount result="Facebook"/>}
-          </div>
+            SubHeader="Tidak perlu khawatir. Masukkan email yang terdaftar dan kami akan mengirimkan tautan untuk membuat kata sandi baru."
+          />} 
 
-          {<Line line="atau masuk dengan email"/>}
-
-          <form onSubmit={handleLogin} className="flex flex-col gap-5">
+          <form className="flex flex-col gap-5">
             <InputField
               src="/assets/auth/login/email.svg"
-              label="Email"
-              name="email"
+              label="Alamat Email"
+              name="AlamatEmail"
               type="email"
               placeholder="email@contoh.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <InputField
-              src="/assets/auth/login/lock.svg"
-              label="Kata Sandi"
-              name="sandi"
-              type="password"
-              placeholder="Masuk kata sandi"
-              value={sandi}
-              onChange={(e) => setSandi(e.target.value)}
-              show={true}
-            />
-
-            <div className="flex gap-2 text-[14px]">
-              <input type="checkbox" name="time_access" checked={isRemember} onChange={(e) => setIsRemember(e.target.checked)} />
-              <label className="text-[#6B7280]">Ingat saya selama 30 hari</label>
-            </div>
-
-            {<Button src="/assets/auth/login/masuk.svg" action="Masuk" order="2" color="#1A73E8"/>}
+            {<Button 
+                src="/assets/auth/forgot/send.svg" 
+                action="Kirim Tautan Reset" 
+                order="none" 
+                color="#1A73E8"/>}
           </form>
-            <span class="self-center text-[12px] text-[#6B7280]">🔒 Login aman dengan enkripsi SSL 256-bit</span>
-            {<SyaratKebijakan first="Dengan masuk, kamu menyetujui" last="kami."/>}
+          
+            <div className="flex flex-col bg-[#E5E7EB80] gap-3 p-5 rounded-[16px]">
+                <span className="font-bold text-[14px]">💡 Tips keamanan:</span>
+                <ul className="flex flex-col gap-[6px] list-none text-[#6B7280] text-[12px]">
+                    <ListRight show="Pastikan kamu memeriksa folder spam/junk email"/>
+                    <ListRight show="Tautan reset hanya berlaku selama 30 menit"/>
+                    <ListRight show="Jangan bagikan tautan reset kepada siapapun"/>
+                </ul>
+            </div>
+            <div className="text-[14px] text-[#6B7280] flex justify-center gap-1">
+                <span>Ingat katasandi kamu?</span>
+                <Link 
+                    to="/" 
+                    className="text-[#1A73E8]"
+                    >
+                        Masuk Sekarang
+                </Link>
+            </div>
         </div>
       </aside>
   )
