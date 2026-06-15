@@ -1,12 +1,17 @@
 import { RouterProvider, createBrowserRouter } from 'react-router';
 
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
-import Forgot from './pages/Forgot.jsx';
+import Login from './pages/auth/Login.jsx';
+import Register from './pages/auth/Register.jsx';
+import Forgot from './pages/auth/Forgot.jsx';
+import LandingPage from './pages/main/LandingPage.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <LandingPage />,
+  },
+  {
+    path: '/auth/login',
     element: <Login />,
   },
   {
