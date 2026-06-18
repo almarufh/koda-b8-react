@@ -1,44 +1,51 @@
-import { RouterProvider, createBrowserRouter } from 'react-router';
-
-import Login from './pages/auth/Login.jsx';
-import Register from './pages/auth/Register.jsx';
-import Forgot from './pages/auth/Forgot.jsx';
-// import LandingPage from './pages/main/LandingPage.jsx';
+import { 
+  RouterProvider, 
+  createBrowserRouter, 
+  Navigate 
+} from 'react-router';
 import React from 'react';
 import AuthContext from './contexts/AuthContext.jsx';
 import AuthLayout from './pages/auth/AuthLayout.jsx';
+import Login from './pages/auth/Login.jsx';
+import Register from './pages/auth/Register.jsx';
+import Forgot from './pages/auth/Forgot.jsx';
 
 const router = createBrowserRouter([
-  // {
-  //   path: '/',
-  //   element: <LandingPage />,
-  // },
   {
     path: '/auth',
-    element:  <AuthLayout />,
+    element: <AuthLayout />,
     children: [
       {
-        path: '/auth/login',
+        index: true,
+        element: <Navigate to="login" replace />,
+      },
+      {
+        path: 'login',
         element: <Login />,
       },
       {
-        path: '/auth/register',
+        path: 'register',
         element: <Register />,
       },
       {
-        path: '/auth/forgot-password',
+        path: 'forgot-password',
         element: <Forgot />,
       }
     ]
   },
-])
+  {
+    path: '*',
+    element: <Navigate to="/auth/login" replace />,
+  }
+]);
 
 function App() {
-  const [auth, setAuth] = React.useState(AuthContext)
+  const [auth, setAuth] = React.useState(null);
+
   return (
-    <AuthContext value={{auth, seAuth}}>
+    <AuthContext.Provider value={{ auth, setAuth }}>
       <RouterProvider router={router} />
-    </AuthContext>
+    </AuthContext.Provider>
   );
 }
 
