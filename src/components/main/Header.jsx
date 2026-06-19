@@ -1,4 +1,3 @@
-import React from 'react'
 import Logo from '../auth/Logo'
 import { Image } from '../../assets/index.js'
 
@@ -36,12 +35,12 @@ export default function Header() {
 
         </div>
         <div className="flex items-center justify-center w-full max-w-432 bg-[#FFFFFF01]">
-            <div className="flex items-center justify-start w-full max-w-7xl p-4 gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-start w-full max-w-7xl pl-4 gap-4">
                 <Logo style="#1A73E8" text="black"/>
                 <div className="flex items-center w-full border border-[#0000001A] rounded-xl">
                     <input 
                         type="text" 
-                        className='flex px-3 py-4 outline-none max-w-xl w-full text-[12px]'
+                        className='flex px-3 py-4 outline-none w-full text-[12px]'
                         placeholder="Cari produk, merek, kategori..." 
                     />
                     <button className='right-0 bg-[#1A73E8] px-3 py-4 border border-[#1A73E8] rounded-r-xl'>
@@ -79,7 +78,7 @@ export default function Header() {
             </div>
         </div>
         <div className="border border-[#0000001A] border-x-0 flex items-center justify-center w-full max-w-432 bg-[#FFFFFF01]">
-            <div className="flex items-center justify-start w-full max-w-7xl p-1">
+            <div className="flex  flex-col md:flex-row items-start md:items-center justify-start w-full max-w-7xl p-1">
                 <div className="flex items-center  px-4 py-2.5 gap-1">
                     <img src="/assets/main/landingpage/menu.svg" alt="Menu" />
                     <span className="text-[14px] text-[#111827]">Semua Kategori</span>

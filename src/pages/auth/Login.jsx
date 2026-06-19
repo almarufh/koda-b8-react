@@ -1,40 +1,43 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { 
+  useNavigate, 
+  useLocation 
+} from 'react-router';
 import InputField from '../../components/auth/InputField.jsx';
-import Logo from '../../components/auth/Logo.jsx'
 import ButtonAccount from '../../components/auth/ButtonAccount.jsx';
-import HeaderAuth from '../../components/auth/HeaderAuth.jsx';
 import Line from '../../components/auth/Line.jsx';
-import BannerFooter from '../../components/auth/BannerFooter.jsx';
 import Button from '../../components/auth/Button.jsx';
-import SyaratKebijakan from '../../components/auth/SyaratKebijakan.jsx'
+import SyaratKebijakan from '../../components/auth/SyaratKebijakan.jsx';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [sandi, setSandi] = useState('');
-  const [isRemember, setIsRemember] = useState(false);
+  const emailRef = React.useRef();
+  const sandiRef = React.useRef();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const login = localStorage.getItem("userActived");
-    if (login) {
-      const userLogin = JSON.parse(login);
-      if (userLogin.status === true) {
-        if (userLogin.expired) {
-          const now = new Date().getTime();
-          const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-          if (now - userLogin.expired < thirtyDays) {
-            window.location.href = "/old/index.html";
-          } else {
-            localStorage.removeItem("userActived");
-          }
-        } else {
-          window.location.href = "/old/index.html";
-        }
-      }
+  React.useEffect(() => {
+    if (location.state?.email) {
+      emailRef.current.value = location.state.email;
     }
-  }, []);
+    if (location.state?.sandi) {
+      sandiRef.current.value = location.state.sandi;
+    }
+  }, [location.state]);
+
+  const handleNavigate = (toUrl) => {
+    navigate(toUrl, {
+      state: {
+        email: emailRef.current?.value || '',
+        sandi: sandiRef.current?.value || ''
+      }
+    });
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
+    const email = emailRef.current.value;
+    const sandi = sandiRef.current.value;
+
     const userSaved = localStorage.getItem("users");
     if (!userSaved) {
       alert("Akun tidak ditemukan");
@@ -42,7 +45,7 @@ export default function Login() {
     }
 
     const users = JSON.parse(userSaved);
-    const user = users.find(u => u.email === email && u.password === sandi);
+    const user = users.find(user => user.email === email && atob(user.password) === sandi);
 
     if (!user) {
       alert("Email atau kata sandi salah!");
@@ -51,8 +54,7 @@ export default function Login() {
 
     const userActived = {
       status: true,
-      email: user.email,
-      ...(isRemember && { expired: new Date().getTime() })
+      email: user.email
     };
 
     localStorage.setItem("userActived", JSON.stringify(userActived));
@@ -60,74 +62,58 @@ export default function Login() {
     window.location.href = "/old/index.html";
   };
 
-function AsideLeft () {
-    return (
-      <aside className="relative bg-[url(/assets/auth/login/Shopping.svg)] bg-cover bg-center hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
-        {<Logo />}
-        <div className="z-10 flex flex-col gap-4">
-            <span className="font-bold text-[32px] text-white">Belanja lebih<br />mudah, hidup lebih<br />praktis</span>
-            <span className="text-[16px] text-[#FFFFFFB2]">Ribuan produk pilihan dengan harga<br />terbaik, pengiriman cepat, dan<br />pembayaran yang aman.</span>
-        </div>
-        <BannerFooter/>
-      </aside>
-    )
-  }
-
-  const AsideRight = (
-    <aside className="flex p-[10px] md:p-[20%] items-center">
-        <div className="flex flex-col w-full gap-8 m-auto">
-          {<HeaderAuth
-            Header="Masuk ke Akun"
-            SubHeader="Belum punya akun?"
-            SubHeaderLink="Daftar gratis"
-            Src="/auth/register"
-          />}          
-          <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
-            {<ButtonAccount result="Google"/>}
-            {<ButtonAccount result="Facebook"/>}
-          </div>
-
-          {<Line line="atau masuk dengan email"/>}
-
-          <form onSubmit={handleLogin} className="flex flex-col gap-5">
-            <InputField
-              src="/assets/auth/login/email.svg"
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="email@contoh.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <InputField
-              src="/assets/auth/login/lock.svg"
-              label="Kata Sandi"
-              name="sandi"
-              type="password"
-              placeholder="Masuk kata sandi"
-              value={sandi}
-              onChange={(e) => setSandi(e.target.value)}
-              show={true}
-            />
-
-            <div className="flex gap-2 text-[14px]">
-              <input type="checkbox" name="time_access" checked={isRemember} onChange={(e) => setIsRemember(e.target.checked)} />
-              <label className="text-[#6B7280]">Ingat saya selama 30 hari</label>
-            </div>
-
-            {<Button src="/assets/auth/login/masuk.svg" action="Masuk" order="2" color="#1A73E8"/>}
-          </form>
-            <span class="self-center text-[12px] text-[#6B7280]">🔒 Login aman dengan enkripsi SSL 256-bit</span>
-            {<SyaratKebijakan first="Dengan masuk, kamu menyetujui" last="kami."/>}
-        </div>
-      </aside>
-  )
-
   return (
-    <main className="grid grid-cols-1 md:grid-cols-2 w-full h-screen font-sans">
-      {<AsideLeft />}
-      {AsideRight}
-    </main>
+    <div className="flex flex-col w-full gap-8 m-auto">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-[28px] font-bold text-[#111827]">Masuk ke Akun</h1>
+        <p className="text-[14px] text-[#6B7280]">
+          Belum punya akun?{' '}
+          <button onClick={() => handleNavigate('/auth/register')} className="text-[#1A73E8] font-medium hover:underline">
+            Daftar gratis
+          </button>
+        </p>
+      </div>       
+      
+      <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
+        <ButtonAccount result="Google"/>
+        <ButtonAccount result="Facebook"/>
+      </div>
+
+      <Line line="atau masuk dengan email"/>
+
+      <form onSubmit={handleLogin} className="flex flex-col gap-5">
+        <InputField
+          src="/assets/auth/login/email.svg"
+          label="Email"
+          name="email"
+          type="email"
+          placeholder="email@contoh.com"
+          ref={emailRef}
+        />
+
+        <div className="relative w-full">
+          <InputField
+            src="/assets/auth/login/lock.svg"
+            label="Kata Sandi"
+            name="sandi"
+            type="password"
+            placeholder="Masuk kata sandi"
+            ref={sandiRef}
+          />
+          <button 
+            type="button" 
+            onClick={() => handleNavigate('/auth/forgot-password')}
+            className="absolute right-0 top-0 text-[14px] text-[#1A73E8] hover:underline"
+          >
+            Lupa kata sandi?
+          </button>
+        </div>
+
+        <Button src="/assets/auth/login/masuk.svg" action="Masuk" order="2" color="#1A73E8"/>
+      </form>
+      
+      <span className="self-center text-[12px] text-[#6B7280]">🔒 Login aman dengan enkripsi SSL 256-bit</span>
+      <SyaratKebijakan first="Dengan masuk, kamu menyetujui" last="kami."/>
+    </div>
   );
 }

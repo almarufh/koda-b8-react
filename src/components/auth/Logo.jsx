@@ -7,9 +7,7 @@ function Logo (props) {
         black: "text-[16px] text-[#111827]"
     }
 
-    const textColor = {
-        className: text[props.text] || text.default
-    }
+    const textColor = text[props.text] || text.default;
     return (
         <div className="z-10 flex gap-3 items-center">
             <span 

@@ -1,120 +1,154 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
+import { 
+  useNavigate, 
+  useLocation 
+} from 'react-router';
 import InputField from '../../components/auth/InputField.jsx';
-import Logo from '../../components/auth/Logo.jsx'
 import ButtonAccount from '../../components/auth/ButtonAccount.jsx';
-import HeaderAuth from '../../components/auth/HeaderAuth.jsx';
 import Line from '../../components/auth/Line.jsx';
-import BannerFooter from '../../components/auth/BannerFooter.jsx';
 import Button from '../../components/auth/Button.jsx';
-import SyaratKebijakan from '../../components/auth/SyaratKebijakan.jsx'
+import SyaratKebijakan from '../../components/auth/SyaratKebijakan.jsx';
 
 export default function Register() {
+  const namaRef = React.useRef();
+  const emailRef = React.useRef();
+  const sandiRef = React.useRef();
+  const confirmSandiRef = React.useRef();
+  const agreeRef = React.useRef();
+  
+  const navigate = useNavigate();
+  const location = useLocation();
 
-function ListLeft (props) {
-    return (
-        <div className="flex gap-3 w-full">
-            <div className="bg-[#FFFFFF33] rounded-[999px] w-[20px] h-[20px] grid place-items-center">
-                <img className="aspect-square" src="/assets/auth/register/ceklis.svg" alt="Ceklist"/>
-            </div>
-            <span className="text-[14px] text-[#FFFFFFCC]">{props.show}</span>
-        </div>
-    )
-}
+  React.useEffect(() => {
+    if (location.state?.namaLengkap) {
+      namaRef.current.value = location.state.namaLengkap;
+    }
+    if (location.state?.email) {
+      emailRef.current.value = location.state.email;
+    }
+    if (location.state?.sandi) {
+      sandiRef.current.value = location.state.sandi;
+    }
+  }, [location.state]);
 
-function AsideLeft () {
-    return (
-      <aside className="relative bg-[url(/assets/auth/register/Shopping_bags.svg)] bg-cover bg-center hidden md:flex flex-col justify-between w-full h-full p-12 bg-[#193CB8]">
-        <Logo />
-        <div className="z-10 flex flex-col gap-4">
-            <span className="font-bold text-[32px] text-white">Bergabung dengan<br />500.000+ pelanggan<br />puas</span>
-            <div className="flex flex-col gap-3">
-                {<ListLeft show="Akses ribuan produk dengan harga terbaik"/>}
-                {<ListLeft show="Lacak pesanan secara real-time"/>}
-                {<ListLeft show="Simpan wishlist & alamat favorit"/>}
-                {<ListLeft show="Dapatkan notifikasi promo eksklusif"/>}
-            </div>
-        </div>
-        <BannerFooter/>
-      </aside>
-    )
-  }
+  const handleNavigate = (toUrl) => {
+    navigate(toUrl, {
+      state: {
+        namaLengkap: namaRef.current?.value || '',
+        email: emailRef.current?.value || '',
+        sandi: sandiRef.current?.value || ''
+      }
+    });
+  };
 
-  const AsideRight = (
-    <aside className="flex p-[10px] md:p-[20%] items-center">
-        <div className="flex flex-col w-full gap-8 m-auto">
-          {<HeaderAuth
-            Header="Buat Akun Baru"
-            SubHeader="Sudah punya akun?"
-            SubHeaderLink="Masuk di sini"
-            Src="/"
-          />}          
-          <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
-            {<ButtonAccount result="Daftar via Google"/>}
-            {<ButtonAccount result="Daftar via Facebook"/>}
-          </div>
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const namaLengkap = namaRef.current.value;
+    const email = emailRef.current.value;
+    const sandi = sandiRef.current.value;
+    const confirmSandi = confirmSandiRef.current.value;
+    const isAgree = agreeRef.current.checked;
 
-          {<Line line="atau daftar dengan email"/>}
+    if (!namaLengkap || !email || !sandi || !confirmSandi) {
+      alert("Semua field harus diisi!");
+      return;
+    }
+    if (sandi !== confirmSandi) {
+      alert("Konfirmasi kata sandi tidak cocok!");
+      return;
+    }
+    if (!isAgree) {
+      alert("Anda harus menyetujui Syarat & Kebijakan!");
+      return;
+    }
+    
+    const userSaved = localStorage.getItem("users");
+    const users = userSaved ? JSON.parse(userSaved) : [];
+    
+    if (users.some(u => u.email === email)) {
+      alert("Email sudah terdaftar!");
+      return;
+    }
 
-          <form 
-            onSubmit="" 
-            className="flex flex-col gap-5">
-            <InputField
-              src="/assets/auth/register/person.svg"
-              label="NamaLengkap"
-              name="NamaLengkap"
-              type="text"
-              placeholder="Nama lengkap kamu"
-            />
-
-            <InputField
-              src="/assets/auth/login/email.svg"
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="email@contoh.com"
-            />
-
-            <InputField
-              src="/assets/auth/login/lock.svg"
-              label="Kata Sandi"
-              name="sandi"
-              type="password"
-              placeholder="Masuk kata sandi"
-            />
-
-            <InputField
-              src="/assets/auth/login/lock.svg"
-              label="Konfirmasi Kata Sandi"
-              name="confirmSandi"
-              type="password"
-              placeholder="Masuk kata sandi"
-            />
-
-            <div className="flex gap-2 text-[14px]">
-              <input 
-                type="checkbox" 
-                name="time_access" 
-                />
-              {<SyaratKebijakan first="Saya menyetujui" last="BeliMudah"/>}
-            </div>
-
-            {<Button 
-                src="/assets/auth/register/pintu.svg" 
-                action="Daftar Sekarang" 
-                order="1"
-                color="#F97316"/>
-            }
-
-          </form>
-            <span class="self-center text-[12px] text-[#6B7280]">🔒 Data kamu aman dan terenkripsi</span>
-        </div>
-      </aside>
-  )
+    users.push({ 
+      nama: namaLengkap, 
+      email, 
+      password: btoa(sandi)
+    });
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Pendaftaran Berhasil! Silakan login.");
+    navigate("/auth/login", { state: { email } });
+  };
 
   return (
-    <main className="grid grid-cols-1 md:grid-cols-2 w-full h-screen font-sans">
-      <AsideLeft />
-      {AsideRight}
-    </main>
+    <div className="flex flex-col w-full gap-8 m-auto">
+      <div className="flex flex-col gap-2">
+        <h1 className="text-[28px] font-bold text-[#111827]">Buat Akun Baru</h1>
+        <p className="text-[14px] text-[#6B7280]">
+          Sudah punya akun?{' '}
+          <button onClick={() => handleNavigate('/auth/login')} className="text-[#1A73E8] font-medium hover:underline">
+            Masuk di sini
+          </button>
+        </p>
+      </div>          
+      
+      <div className="grid grid-cols-2 gap-3 text-[14px] font-medium text-[#6B7280]">
+        <ButtonAccount result="Daftar via Google"/>
+        <ButtonAccount result="Daftar via Facebook"/>
+      </div>
+
+      <Line line="atau daftar dengan email"/>
+
+      <form onSubmit={handleRegister} className="flex flex-col gap-5">
+        <InputField
+          src="/assets/auth/register/person.svg"
+          label="Nama Lengkap"
+          name="NamaLengkap"
+          type="text"
+          placeholder="Nama lengkap kamu"
+          ref={namaRef}
+        />
+
+        <InputField
+          src="/assets/auth/login/email.svg"
+          label="Email"
+          name="email"
+          type="email"
+          placeholder="email@contoh.com"
+          ref={emailRef}
+        />
+
+        <InputField
+          src="/assets/auth/login/lock.svg"
+          label="Kata Sandi"
+          name="sandi"
+          type="password"
+          placeholder="Masuk kata sandi"
+          ref={sandiRef}
+        />
+
+        <InputField
+          src="/assets/auth/login/lock.svg"
+          label="Konfirmasi Kata Sandi"
+          name="confirmSandi"
+          type="password"
+          placeholder="Masuk kata sandi"
+          ref={confirmSandiRef}
+        />
+
+        <div className="flex gap-2 text-[14px]">
+          <input 
+            type="checkbox" 
+            name="time_access" 
+            ref={agreeRef}
+          />
+          <SyaratKebijakan first="Saya menyetujui" last="BeliMudah"/>
+        </div>
+
+        <Button src="/assets/auth/register/pintu.svg" action="Daftar Sekarang" order="1" color="#F97316"/>
+      </form>
+      
+      <span className="self-center text-[12px] text-[#6B7280]">🔒 Data kamu aman dan terenkripsi</span>
+    </div>
   );
 }
