@@ -11,6 +11,7 @@ import Register from './pages/auth/Register.jsx';
 import Forgot from './pages/auth/Forgot.jsx';
 import LandingPage from './pages/main/LandingPage.jsx';
 import MainLayout from './pages/main/MainLayout.jsx';
+import DetailPage from './pages/main/DetailPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: 'landing-page',
         element: <LandingPage />
+      },
+      {
+        path: 'detail-page',
+        element: <DetailPage />
       },
     ]
   },
