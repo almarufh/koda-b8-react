@@ -45,7 +45,7 @@ export default function Login() {
     }
 
     const users = JSON.parse(userSaved);
-    const user = users.find(user => user.email === email && user.password === sandi);
+    const user = users.find(user => user.email === email && atob(user.password) === sandi);
 
     if (!user) {
       alert("Email atau kata sandi salah!");
