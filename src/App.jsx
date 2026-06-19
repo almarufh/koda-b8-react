@@ -9,6 +9,7 @@ import AuthLayout from './pages/auth/AuthLayout.jsx';
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
 import Forgot from './pages/auth/Forgot.jsx';
+import LandingPage from './pages/main/LandingPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -34,8 +35,12 @@ const router = createBrowserRouter([
     ]
   },
   {
+    path: '/',
+    element: <LandingPage />
+  },
+  {
     path: '*',
-    element: <Navigate to="/auth/login" replace />,
+    element: <Navigate to="/" replace />,
   }
 ]);
 
