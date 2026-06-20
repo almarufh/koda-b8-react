@@ -5,6 +5,7 @@ import {
 } from "react-icons/fa6";
 import { IoFlashSharp } from "react-icons/io5";
 import { BsClock } from "react-icons/bs";
+import StarRating from "../../components/main/StarRating";
 
 export default function LandingPage () {
 
@@ -54,17 +55,10 @@ export default function LandingPage () {
                 {props.title}
                 </span>
                 <div className="flex gap-1">
-                <div className="flex">
-                    {[...Array(totalStars)].map((_, index) => (
-                    <FaStar 
-                        key={index} 
-                        color={index < goldStarsCount ? "gold" : "#E5E7EB"} 
-                    />
-                    ))}
-                </div>
-                <span className="text-[14px] text-[#6B7280]">
-                    {props.ratingText}
-                </span>
+                <StarRating 
+                    ratingValue={props.ratingValue} 
+                    ratingText={props.ratingText}
+                />
                 </div>
                 <div className="flex items-center pt-1 gap-2">
                 <span className="text-[16px] text-[#1A73E8]">
