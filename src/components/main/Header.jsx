@@ -94,7 +94,7 @@ export default function Header() {
                 <Navimg img="🔥" text="Promo" style="promo" />
             </div>
         </div>
-        <main className='flex flex-col items-center w-full h-screen'>
+        <main className='flex flex-col items-center w-full'>
             <Outlet />
         </main>
     </div>
