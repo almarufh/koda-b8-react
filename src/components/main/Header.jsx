@@ -1,8 +1,34 @@
 import Logo from '../auth/Logo'
 import { Image } from '../../assets/index.js'
-import { Outlet } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
+import React from 'react';
+import { LuLogOut } from "react-icons/lu";
 
 export default function Header() {
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = React.useState(null);
+
+    React.useEffect(() => {
+        const activeData = localStorage.getItem("userActived");
+        if (activeData) {
+            const parsedData = JSON.parse(activeData);
+            if (parsedData.status && parsedData.user) {
+            setCurrentUser(parsedData.user);
+            }
+        }
+    }, []);
+
+    const handleAuthAction = () => {
+        if (currentUser) {
+            const loggedOutState = { status: false, user: null };
+            localStorage.setItem("userActived", JSON.stringify(loggedOutState));
+            setCurrentUser(null);
+            alert("Logout Berhasil!");
+        } else {
+            navigate("/auth/login");
+        }
+    };
+
     function Navimg (props) {
         const color = {
             default: "text-[14px] text-[#6B7280]",
@@ -58,12 +84,25 @@ export default function Header() {
                         alt="Bell" 
                         className='p-[10px]'
                     />
-                    <div className="flex p-[10px] gap-2 items-center">
-                        <img 
-                            src="/assets/main/landingpage/person.svg" 
-                            alt="person" 
-                        />
-                        <span className='text-[14px] text-[#111827'>Budi</span>
+                    <div className="flex items-center gap-3">
+                        <div 
+                            onClick={!currentUser ? handleAuthAction : handleAuthAction}
+                            className="flex p-[10px] gap-2 items-center cursor-pointer"
+                        >
+                        {currentUser ? (
+                            <LuLogOut size={16} className="text-[#DC2626]" />
+                        ) : (
+                            <img 
+                                src="/assets/main/landingpage/person.svg" 
+                                alt="person" 
+                            />
+                        )}
+                        <span 
+                            className='text-[14px] text-[#111827] font-medium'
+                        >
+                            {currentUser ? currentUser.nama : "Login"}
+                        </span>
+                    </div>
                     </div>
                     <img
                         src="/assets/main/landingpage/love.svg"
