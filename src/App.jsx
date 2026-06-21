@@ -12,6 +12,7 @@ import Forgot from './pages/auth/Forgot.jsx';
 import LandingPage from './pages/main/LandingPage.jsx';
 import MainLayout from './pages/main/MainLayout.jsx';
 import DetailPage from './pages/main/DetailPage.jsx';
+import CartPage from './pages/main/Cart.jsx';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
         path: 'detail-page',
         element: <DetailPage />
       },
+      {
+        path: 'cart',
+        element: <CartPage />
+      }
     ]
   },
   {
