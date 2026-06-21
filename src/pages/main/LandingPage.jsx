@@ -6,10 +6,21 @@ import { IoFlashSharp } from "react-icons/io5";
 import { BsClock } from "react-icons/bs";
 import StarRating from "../../components/main/StarRating";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export default function LandingPage () {
     const [products, setProducts] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
+    const navigate = useNavigate();
+
+    const handleProductClick = (item) => {
+        const cleanBrand = item.brand.replace(/\s+/g, ' ');
+        const cleanTitle = item.title.replace(/\s+/g, ' ');
+        const productSlug = `${item.id}-${cleanBrand}-${cleanTitle}`;
+        navigate(`/main/toko/${encodeURIComponent(productSlug)}`, {
+            state: { product: item }
+        });
+    };
 
     useEffect(() => {
         fetch('/database/products.json')
@@ -54,10 +65,60 @@ export default function LandingPage () {
         )
     }
 
+    // function ProductCard(props) {
+    //     const isNew = props.discount === "Baru";
+    //     return (
+    //         <div className="flex flex-col border border-[#0000001A] w-full rounded-md bg-[#FFFFFF] overflow-hidden hover:shadow-md transition-shadow">
+    //             <div className="relative w-full aspect-square bg-[#F8F9FA] flex items-center justify-center">
+    //                 {props.discount && (
+    //                     <span 
+    //                         className={`absolute top-2 left-2 text-[12px] px-2 py-1 rounded-full text-white ${
+    //                             isNew ? "bg-[#1A73E8]" : "bg-[#DC2626]"
+    //                         }`}
+    //                     >
+    //                         {isNew ? props.discount : `-${props.discount}`}
+    //                     </span>
+    //                 )}
+    //                 <img
+    //                     src={props.src === "*" ? "/assets/main/landingpage/Headphone Wireless Premium.svg" : props.src}
+    //                     alt={props.alt}
+    //                     className="rounded-t-md w-full object-cover"
+    //                 />
+    //             </div>
+    //             <div className="flex flex-col p-6 gap-1">
+    //                 <span className="text-[12px] text-[#6B7280]">
+    //                     {props.brand}
+    //                 </span>
+    //                 <span className="text-[14px] text-[#111827]">
+    //                     {props.title}
+    //                 </span>
+    //                 <div className="flex gap-1">
+    //                     <StarRating
+    //                         ratingValue={props.ratingValue}
+    //                         ratingText={props.ratingText}
+    //                     />
+    //                 </div>
+    //                 <div className="flex items-center pt-1 gap-2">
+    //                     <span className="text-[16px] text-[#1A73E8] font-semibold">
+    //                         Rp {props.price.toLocaleString('id-ID')}
+    //                     </span>
+    //                     {props.oldPrice && (
+    //                         <span className="text-[12px] text-[#6B7280] line-through">
+    //                             Rp {props.oldPrice.toLocaleString('id-ID')}
+    //                         </span>
+    //                     )}
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // }
     function ProductCard(props) {
         const isNew = props.discount === "Baru";
         return (
-            <div className="flex flex-col border border-[#0000001A] w-full rounded-md bg-[#FFFFFF] overflow-hidden hover:shadow-md transition-shadow">
+            <div 
+                onClick={props.onClick} 
+                className="flex flex-col border border-[#0000001A] w-full rounded-md bg-[#FFFFFF] overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+            >
                 <div className="relative w-full aspect-square bg-[#F8F9FA] flex items-center justify-center">
                     {props.discount && (
                         <span 
@@ -184,6 +245,7 @@ export default function LandingPage () {
                             price={item.price}
                             oldPrice={item.oldPrice}
                             discount={item.discount}
+                            onClick={() => handleProductClick(item)}
                         />
                     ))}
                 </div>
@@ -216,6 +278,7 @@ export default function LandingPage () {
                             price={item.price}
                             oldPrice={item.oldPrice}
                             discount={item.discount}
+                            onClick={() => handleProductClick(item)}
                         />
                     ))}
                 </div>
@@ -240,6 +303,7 @@ export default function LandingPage () {
                             price={item.price}
                             oldPrice={item.oldPrice}
                             discount={item.discount}
+                            onClick={() => handleProductClick(item)}
                         />
                     ))}
                 </div>
