@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FaMinus, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { IoPricetagOutline } from "react-icons/io5";
 import { HiOutlineHeart } from "react-icons/hi";
+import CartContext from '../../contexts/CartContext.jsx';
 
 export default function CartPage() {
-  const [quantity, setQuantity] = useState(1);
+  const { cart, setCart } = useContext(CartContext);
   const [promoCode, setPromoCode] = useState('');
   const [discount, setDiscount] = useState(0);
 
-  const productPrice = 450000;
-  const subtotal = productPrice * quantity;
+  if (!cart || !cart.id) {
+    return (
+      <div className="w-full max-w-7xl mx-auto px-6 py-16 text-center bg-[#F8F9FA]">
+        <h2 className="text-[20px] font-medium text-[#6B7280]">Keranjang belanja Anda masih kosong.</h2>
+      </div>
+    );
+  }
+
+  const subtotal = cart.price * cart.quantity;
   const total = subtotal - discount;
 
   const handleDecrease = () => {
-    if (quantity > 1) setQuantity(prev => prev - 1);
+    if (cart.quantity > 1) {
+      setCart(prev => ({ ...prev, quantity: prev.quantity - 1 }));
+    }
   };
 
   const handleIncrease = () => {
-    setQuantity(prev => prev + 1);
+    if (cart.quantity < cart.stock) {
+      setCart(prev => ({ ...prev, quantity: prev.quantity + 1 }));
+    }
+  };
+
+  const handleRemoveItem = () => {
+    setCart({});
   };
 
   const handleApplyPromo = (e) => {
@@ -40,10 +56,10 @@ export default function CartPage() {
     const payload = {
       items: [
         {
-          name: "Headphone Wireless Premium",
-          color: "Hitam",
-          price: productPrice,
-          quantity: quantity
+          name: cart.title,
+          color: cart.color,
+          price: cart.price,
+          quantity: cart.quantity
         }
       ],
       subtotal,
@@ -56,54 +72,35 @@ export default function CartPage() {
   return (
     <div className="w-full max-w-7xl mx-auto px-6 py-8 font-sans bg-[#F8F9FA] flex flex-col gap-6">
       <h1 className="text-[24px] font-bold text-[#111827]">
-        Keranjang Belanja ({quantity} item)
+        Keranjang Belanja ({cart.quantity} item)
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Kolom Kiri: Produk & Promo */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           
-          {/* Item Produk Card */}
           <div className="flex items-center justify-between border border-[#E5E7EB] rounded-2xl p-5 bg-white shadow-sm gap-4">
             <div className="flex gap-4 items-center">
               <div className="w-24 h-24 border border-[#E5E7EB] rounded-xl overflow-hidden p-2 bg-white flex items-center justify-center">
-                <img 
-                  src="/assets/main/landingpage/Headphone Wireless Premium.svg" 
-                  alt="Headphone Wireless Premium" 
-                  className="w-full h-full object-contain"
-                />
+                <img src={cart.imageSrc} alt={cart.title} className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="text-[16px] font-semibold text-[#111827]">Headphone Wireless Premium</h3>
-                <span className="text-[14px] text-[#6B7280]">Hitam</span>
+                <h3 className="text-[16px] font-semibold text-[#111827]">{cart.title}</h3>
+                <span className="text-[14px] text-[#6B7280]">{cart.color}</span>
                 
-                {/* Counter & Wishlist */}
                 <div className="flex items-center gap-4 mt-2">
                   <div className="flex items-center rounded-xl border border-[#E5E7EB] bg-white overflow-hidden">
-                    <button 
-                      type="button" 
-                      onClick={handleDecrease}
-                      className="px-3 py-2 text-[#4B5563] hover:bg-gray-50 transition-colors"
-                    >
+                    <button type="button" onClick={handleDecrease} className="px-3 py-2 text-[#4B5563]">
                       <FaMinus size={10} />
                     </button>
-                    <span className="px-3 text-[14px] font-semibold text-[#111827] min-w-[20px] text-center select-none">
-                      {quantity}
+                    <span className="px-3 text-[14px] font-semibold text-[#111827] min-w-[20px] text-center">
+                      {cart.quantity}
                     </span>
-                    <button 
-                      type="button" 
-                      onClick={handleIncrease}
-                      className="px-3 py-2 text-[#4B5563] hover:bg-gray-50 transition-colors"
-                    >
+                    <button type="button" onClick={handleIncrease} className="px-3 py-2 text-[#4B5563]">
                       <FaPlus size={10} />
                     </button>
                   </div>
 
-                  <button 
-                    type="button"
-                    onClick={() => alert("Ditambahkan ke Wishlist")}
-                    className="flex items-center gap-1 text-[13px] text-[#6B7280] hover:text-[#F97316] transition-colors"
-                  >
+                  <button type="button" className="flex items-center gap-1 text-[13px] text-[#6B7280]">
                     <HiOutlineHeart size={16} />
                     <span>Simpan ke Wishlist</span>
                   </button>
@@ -111,13 +108,8 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Sisi Kanan: Hapus & Harga */}
             <div className="flex flex-col items-end justify-between h-24 py-1">
-              <button 
-                type="button"
-                onClick={() => alert("Item dihapus")}
-                className="text-[#9CA3AF] hover:text-[#DC2626] transition-colors"
-              >
+              <button type="button" onClick={handleRemoveItem} className="text-[#9CA3AF] hover:text-[#DC2626]">
                 <FaTrashCan size={16} />
               </button>
               <span className="text-[16px] font-bold text-[#1A73E8]">
@@ -126,42 +118,31 @@ export default function CartPage() {
             </div>
           </div>
 
-          {/* Form Kode Promo */}
           <div className="border border-[#E5E7EB] rounded-2xl p-6 bg-white shadow-sm flex flex-col gap-3">
             <div className="flex items-center gap-2 text-[16px] font-bold text-[#111827]">
               <IoPricetagOutline size={18} className="text-[#1A73E8]" />
               <h2>Kode Promo</h2>
             </div>
-            
             <form onSubmit={handleApplyPromo} className="flex gap-3 w-full">
               <input 
                 type="text" 
                 placeholder="Masukkan kode promo"
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value)}
-                className="flex-1 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] outline-none focus:border-[#1A73E8] transition-colors"
+                className="flex-1 bg-[#F3F4F6] border border-[#E5E7EB] rounded-xl px-4 py-3 text-[14px] outline-none"
               />
-              <button 
-                type="submit"
-                className="bg-[#1A73E8] hover:bg-[#1557B0] text-white text-[14px] font-semibold px-6 py-3 rounded-xl transition-colors"
-              >
+              <button type="submit" className="bg-[#1A73E8] text-white text-[14px] font-semibold px-6 py-3 rounded-xl">
                 Terapkan
               </button>
             </form>
-            <span className="text-[12px] text-[#9CA3AF]">
-              Coba: <span className="font-medium text-[#6B7280]">HEMAT10</span>, <span className="font-medium text-[#6B7280]">BELIMUDAH</span>, atau <span className="font-medium text-[#6B7280]">NEWUSER</span>
-            </span>
           </div>
-
         </div>
 
-        {/* Kolom Kanan: Ringkasan Pesanan */}
         <div className="border border-[#E5E7EB] rounded-2xl p-6 bg-white shadow-sm flex flex-col gap-4">
           <h2 className="text-[18px] font-bold text-[#111827]">Ringkasan Pesanan</h2>
-          
           <div className="flex flex-col gap-3 text-[14px] text-[#6B7280] border-b border-[#F3F4F6] pb-4">
             <div className="flex justify-between">
-              <span>Subtotal ({quantity} item)</span>
+              <span>Subtotal ({cart.quantity} item)</span>
               <span className="text-[#111827] font-medium">Rp {subtotal.toLocaleString('id-ID')}</span>
             </div>
             {discount > 0 && (
@@ -172,7 +153,7 @@ export default function CartPage() {
             )}
             <div className="flex justify-between">
               <span>Ongkos Kirim</span>
-              <span className="text-[#00A63E] font-bold text-[12px] tracking-wide">GRATIS</span>
+              <span className="text-[#00A63E] font-bold text-[12px]">GRATIS</span>
             </div>
           </div>
 
@@ -181,21 +162,9 @@ export default function CartPage() {
             <span className="text-[#1A73E8] text-[18px]">Rp {total.toLocaleString('id-ID')}</span>
           </div>
 
-          <button 
-            type="button"
-            onClick={handleCheckout}
-            className="w-full bg-[#F97316] hover:bg-[#EA580C] text-white font-medium py-4 rounded-xl flex items-center justify-center gap-2 transition-colors mt-2"
-          >
-            <span className="text-xl">🛡️</span>
-            <span className="text-[16px]">Checkout Aman</span>
+          <button type="button" onClick={handleCheckout} className="w-full bg-[#F97316] text-white font-medium py-4 rounded-xl flex items-center justify-center gap-2">
+            <span>Checkout Aman</span>
           </button>
-
-          <div className="flex flex-col items-center gap-1 text-[11px] text-[#9CA3AF] text-center mt-2">
-            <span className="flex items-center gap-1 font-medium text-[#6B7280]">
-              🔒 Pembayaran 100% Aman
-            </span>
-            <span>Metode: Transfer Bank · Virtual Account · Kartu Kredit · e-Wallet</span>
-          </div>
         </div>
       </div>
     </div>
