@@ -43,7 +43,7 @@ export default function Header() {
     }
 
   return (
-    <div className='flex flex-col width full max-w-432 mx-auto items-center'>
+    <div className='border flex flex-col w-full mx-auto items-center'>
         <div className="flex items-center justify-center w-full max-w-432 bg-[#1A73E8]">
             <div className='flex items-center justify-between w-full max-w-7xl pl-4 pr-4'>
                 <div className='flex items-center gap-1'>
@@ -62,15 +62,15 @@ export default function Header() {
 
         </div>
         <div className="flex items-center justify-center w-full max-w-432 bg-[#FFFFFF01]">
-            <div className="flex flex-col md:flex-row items-center justify-start w-full max-w-7xl pl-4 gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-start w-full max-w-7xl pl-4 py-1 gap-4">
                 <Logo style="#1A73E8" text="black"/>
-                <div className="flex items-center w-full border border-[#0000001A] rounded-xl">
+                <div className="flex items-center w-full border border-[#0000001A] rounded-md">
                     <input 
                         type="text" 
-                        className='flex px-3 py-4 outline-none w-full text-[12px]'
+                        className='flex px-3 outline-none w-full text-[12px]'
                         placeholder="Cari produk, merek, kategori..." 
                     />
-                    <button className='right-0 bg-[#1A73E8] px-3 py-4 border border-[#1A73E8] rounded-r-xl'>
+                    <button className='right-0 bg-[#1A73E8] px-3 py-1.5 border border-[#1A73E8] rounded-r-md'>
                         <img 
                             src="/assets/main/landingpage/search.svg" 
                             alt="Search" 
