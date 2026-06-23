@@ -4,7 +4,7 @@ import {
   Navigate 
 } from 'react-router';
 import React from 'react';
-import AuthContext from './contexts/AuthContext.jsx';
+import CartContext from './contexts/CartContext.jsx';
 import AuthLayout from './pages/auth/AuthLayout.jsx';
 import Login from './pages/auth/Login.jsx';
 import Register from './pages/auth/Register.jsx';
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
         element: <LandingPage />
       },
       {
-        path: 'detail-page',
+        path: 'toko/:id',
         element: <DetailPage />
       },
       {
@@ -67,11 +67,12 @@ const router = createBrowserRouter([
 
 function App() {
   const [auth, setAuth] = React.useState(null);
+  const [cart, setCart] = React.useState({})
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <CartContext.Provider value={{ auth, setAuth, cart, setCart }}>
       <RouterProvider router={router} />
-    </AuthContext.Provider>
+    </CartContext.Provider>
   );
 }
 
