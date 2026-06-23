@@ -1,8 +1,34 @@
 import Logo from '../auth/Logo'
 import { Image } from '../../assets/index.js'
-import { Outlet } from 'react-router'
+import { Outlet, useNavigate } from 'react-router'
+import React from 'react';
+import { LuLogOut } from "react-icons/lu";
 
 export default function Header() {
+    const navigate = useNavigate();
+    const [currentUser, setCurrentUser] = React.useState(null);
+
+    React.useEffect(() => {
+        const activeData = localStorage.getItem("userActived");
+        if (activeData) {
+            const parsedData = JSON.parse(activeData);
+            if (parsedData.status && parsedData.user) {
+            setCurrentUser(parsedData.user);
+            }
+        }
+    }, []);
+
+    const handleAuthAction = () => {
+        if (currentUser) {
+            const loggedOutState = { status: false, user: null };
+            localStorage.setItem("userActived", JSON.stringify(loggedOutState));
+            setCurrentUser(null);
+            alert("Logout Berhasil!");
+        } else {
+            navigate("/auth/login");
+        }
+    };
+
     function Navimg (props) {
         const color = {
             default: "text-[14px] text-[#6B7280]",
@@ -17,7 +43,7 @@ export default function Header() {
     }
 
   return (
-    <div className='flex flex-col width full max-w-432 mx-auto items-center'>
+    <div className='border flex flex-col w-full mx-auto items-center'>
         <div className="flex items-center justify-center w-full max-w-432 bg-[#1A73E8]">
             <div className='flex items-center justify-between w-full max-w-7xl pl-4 pr-4'>
                 <div className='flex items-center gap-1'>
@@ -36,15 +62,15 @@ export default function Header() {
 
         </div>
         <div className="flex items-center justify-center w-full max-w-432 bg-[#FFFFFF01]">
-            <div className="flex flex-col md:flex-row items-center justify-start w-full max-w-7xl pl-4 gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-start w-full max-w-7xl pl-4 py-1 gap-4">
                 <Logo style="#1A73E8" text="black"/>
-                <div className="flex items-center w-full border border-[#0000001A] rounded-xl">
+                <div className="flex items-center w-full border border-[#0000001A] rounded-md">
                     <input 
                         type="text" 
-                        className='flex px-3 py-4 outline-none w-full text-[12px]'
+                        className='flex px-3 outline-none w-full text-[12px]'
                         placeholder="Cari produk, merek, kategori..." 
                     />
-                    <button className='right-0 bg-[#1A73E8] px-3 py-4 border border-[#1A73E8] rounded-r-xl'>
+                    <button className='right-0 bg-[#1A73E8] px-3 py-1.5 border border-[#1A73E8] rounded-r-md'>
                         <img 
                             src="/assets/main/landingpage/search.svg" 
                             alt="Search" 
@@ -58,12 +84,25 @@ export default function Header() {
                         alt="Bell" 
                         className='p-[10px]'
                     />
-                    <div className="flex p-[10px] gap-2 items-center">
-                        <img 
-                            src="/assets/main/landingpage/person.svg" 
-                            alt="person" 
-                        />
-                        <span className='text-[14px] text-[#111827'>Budi</span>
+                    <div className="flex items-center gap-3">
+                        <div 
+                            onClick={!currentUser ? handleAuthAction : handleAuthAction}
+                            className="flex p-[10px] gap-2 items-center cursor-pointer"
+                        >
+                        {currentUser ? (
+                            <LuLogOut size={16} className="text-[#DC2626]" />
+                        ) : (
+                            <img 
+                                src="/assets/main/landingpage/person.svg" 
+                                alt="person" 
+                            />
+                        )}
+                        <span 
+                            className='text-[14px] text-[#111827] font-medium'
+                        >
+                            {currentUser ? currentUser.nama : "Login"}
+                        </span>
+                    </div>
                     </div>
                     <img
                         src="/assets/main/landingpage/love.svg"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { 
   useNavigate, 
   useLocation 
@@ -54,10 +55,11 @@ export default function Login() {
 
     const userActived = {
       status: true,
-      email: user.email
+      user: user
     };
 
     localStorage.setItem("userActived", JSON.stringify(userActived));
+    console.log(userActived)
     alert("Login Berhasil!");
     window.location.href = "/old/index.html";
   };
