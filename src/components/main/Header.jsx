@@ -5,6 +5,7 @@ import React from 'react';
 import { LuLogOut } from "react-icons/lu";
 
 export default function Header() {
+    const [isOpen, setIsOpen] = React.useState(false);
     const navigate = useNavigate();
     const [currentUser, setCurrentUser] = React.useState(null);
 
@@ -117,13 +118,22 @@ export default function Header() {
                 </div>
             </div>
         </div>
-        <div className="border border-[#0000001A] border-x-0 flex items-center justify-start md:items-center w-full bg-[#FFFFFF01]">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-start w-fit md:w-full md:w-[95%] xl:w-[90%] 2xl:w-[80%] p-1">
-                <div className="flex items-center px-2 xl:px-4 py-2.5 gap-1">
+
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-start w-full md:w-[95%] xl:w-[90%] 2xl:w-[80%] p-1 rounded-lg">
+            <div 
+            className="flex items-center px-2 xl:px-4 py-2.5 gap-1 cursor-pointer hover:bg-gray-50 rounded-md w-full md:w-auto justify-between md:justify-start"
+            onClick={() => setIsOpen(!isOpen)}
+            >
+                <div className="flex items-center gap-1">
                     <img src="/assets/main/landingpage/menu.svg" alt="Menu" />
-                    <span className="text-[12px] xl:text-[14px] text-[#111827]">Semua Kategori</span>
-                    <Image.Down className="self-center size-[14px]"/>
+                    <span className="text-[12px] xl:text-[14px] text-[#111827] font-medium">Semua Kategori</span>
                 </div>
+                <Image.Down 
+                    className={`self-center size-3.5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                />
+            </div>
+
+            <div className={`${isOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row w-full md:w-auto items-start md:items-center mt-2 md:mt-0 gap-1 md:gap-0`}>
                 <Navimg img="💻" text="Elektronik" />
                 <Navimg img="👗" text="Fashion" />
                 <Navimg img="🏠" text="Rumah & Dapur" />
@@ -132,6 +142,7 @@ export default function Header() {
                 <Navimg img="📚" text="Buku & Alat Tulis" />
                 <Navimg img="🔥" text="Promo" style="promo" />
             </div>
+
         </div>
     </div>
   )
