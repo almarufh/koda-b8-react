@@ -9,10 +9,10 @@ function Logo (props) {
 
     const textColor = text[props.text] || text.default;
     return (
-        <div className="z-10 flex gap-3 items-center">
+        <div className="order-1 md:order-0 z-10 flex gap-3 items-center w-fit">
             <span 
                 style={color}
-                className="flex justify-center items-center rounded-[12px] p-[6px_11px] text-[14px] text-[#FFFFFF]">B</span>
+                className="flex justify-center items-center rounded-xl p-[6px_11px] text-[14px] text-[#FFFFFF]">B</span>
             <span 
                 className={textColor}
             >BeliMudah</span>
