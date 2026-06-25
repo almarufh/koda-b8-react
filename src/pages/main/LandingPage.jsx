@@ -23,7 +23,7 @@ export default function LandingPage () {
     };
 
     useEffect(() => {
-        fetch('/database/products.json')
+        fetch('/database/products copy.json')
             .then((res) => {
                 if (!res.ok) throw new Error("Gagal memuat data produk");
                 return res.json();
