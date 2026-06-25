@@ -1,4 +1,4 @@
-import Logo from '../auth/Logo'
+import Logo from '../auth/Logo.jsx'
 import { Image } from '../../assets/index.js'
 import { useNavigate } from 'react-router'
 import React from 'react';
