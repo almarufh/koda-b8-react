@@ -21,6 +21,10 @@ import StepSecond from './pages/main/checkout/StepSecond'
 import StepThird from './pages/main/checkout/StepThird'
 
 const router = createBrowserRouter([
+    // {
+    //     path: '/',
+    //     element: <Navigate to="/main" replace />
+    // },
     {
         path: '/auth',
         element: <AuthLayout />,
@@ -34,7 +38,7 @@ const router = createBrowserRouter([
                 element: <Login />
             },
             {
-                path: 'forgot-password',
+                path: 'forgotpassword',
                 element: <ForgotPaasword />
             },
             {
@@ -100,15 +104,15 @@ const router = createBrowserRouter([
                 element: <CheckoutLayout />,
                 children: [
                     {
-                        path: 'step-first',
+                        path: 'first',
                         element: <StepFirst />
                     },
                     {
-                        path: 'step-second',
+                        path: 'second',
                         element: <StepSecond />
                     },
                     {
-                        path: 'step-third',
+                        path: 'third',
                         element: <StepThird />
                     }
                 ]
