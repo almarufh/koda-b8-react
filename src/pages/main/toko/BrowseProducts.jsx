@@ -19,7 +19,7 @@ function BrowseProducts() {
   }
 
   return (
-    <div className="border border-red-500 flex flex-col w-[80%] m-auto px-4 py-6 gap-6 ">
+    <div className="flex flex-col w-[80%] m-auto px-4 py-6 gap-6 ">
       <PathProduct 
         paths={path}
       />
@@ -110,7 +110,7 @@ function BrowseProducts() {
               />
           </form>
         </div>
-        <div className="border flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-4 w-full">
           <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500">18 produk ditemukan</span>
             <div className="flex items-center gap-2">
