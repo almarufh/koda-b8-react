@@ -19,6 +19,7 @@ import CheckoutLayout from './pages/main/checkout/CheckoutLayout'
 import StepFirst from './pages/main/checkout/StepFirst'
 import StepSecond from './pages/main/checkout/StepSecond'
 import StepThird from './pages/main/checkout/StepThird'
+import Succes from './pages/main/checkout/Succes'
 
 const router = createBrowserRouter([
     // {
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
                     {
                         path: 'third',
                         element: <StepThird />
+                    },
+                    {
+                        path: 'success',
+                        element: <Succes />
                     }
                 ]
             }
