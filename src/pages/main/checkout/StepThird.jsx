@@ -105,8 +105,10 @@ diproses setelah kamu mengkonfirmasi di langkah ini.</span>
             className="border border-gray-200 text-gray-400 font-medium items-center w-full py-3 px-5 rounded-xl"
           >Kembali</button>
           <button 
-            className="items-center w-full rounded-xl bg-orange-500 text-white font-medium"
-          >Bayar Rp {(450000).toLocaleString()} Sekarang</button>
+            className="flex items-center justify-center gap-2 w-full rounded-xl bg-orange-500 text-white font-medium"
+          >
+            <IoLockClosedOutline color="white" />
+            <span className="text-white font-medium">Bayar Rp {(450000).toLocaleString()} Sekarang</span></button>
         </div>
         {/* Input FIeld */}
         
