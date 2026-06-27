@@ -1,8 +1,5 @@
 import React from 'react'
-import { FiCreditCard } from "react-icons/fi";
-import { RiBankLine, RiBankCardLine } from "react-icons/ri";
-import { MdPayments } from "react-icons/md";
-import { BsQrCode } from "react-icons/bs";
+import { LuShield } from "react-icons/lu";
 import { IoLockClosedOutline } from "react-icons/io5";
 
 function StepThird() {
@@ -77,7 +74,7 @@ function StepThird() {
           <span className="text-md">Metode Pengiriman</span>
           <span className="text-sm text-gray-500">JNE Reguler · 3-5 hari kerja</span>
         </div>
-        <div className="flex flex-col w-full h-fit items-start gap-1 bg-gray-100 p-4 rounded-lg shadow-sm">
+        <div className="flex flex-col w-full h-fit items-start gap-2 bg-gray-100 p-4 rounded-lg shadow-sm">
           <span className="text-md">Produk yang Dipesan</span>
           <div className="w-full flex items-center justify-between">
             <div className="flex gap-2 items-center">
@@ -94,16 +91,22 @@ function StepThird() {
               </div>
             </div>
             <span className="justify-self-end text-blue-500 font-medium text-xl">Rp 450.000</span>
-          </div>
-          
+          </div>   
         </div>
+
+        <div className=" flex gap-3 p-4 items-start bg-blue-100 rounded-md">
+          <LuShield color='blue' siz={12} />
+          <span className="text-xs text-gray-400">Dengan menekan "Bayar Sekarang", kamu menyetujui Syarat & Ketentuan kami. Pembayaran baru akan
+diproses setelah kamu mengkonfirmasi di langkah ini.</span>
+        </div>
+
         <div className="grid w-full grid-cols-[1fr_4fr] gap-3">
           <button
             className="border border-gray-200 text-gray-400 font-medium items-center w-full py-3 px-5 rounded-xl"
           >Kembali</button>
           <button 
             className="items-center w-full rounded-xl bg-orange-500 text-white font-medium"
-          >Bayar Rp {(450000).toLocaleString()} Sekaarang</button>
+          >Bayar Rp {(450000).toLocaleString()} Sekarang</button>
         </div>
         {/* Input FIeld */}
         
