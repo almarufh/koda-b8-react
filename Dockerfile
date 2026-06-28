@@ -2,7 +2,7 @@ FROM alpine:latest AS clone-project
 
 WORKDIR /files
 RUN apk add git
-RUN git clone https://github.com/almarufh/Koda-B8-React .
+RUN git clone https://github.com/almarufh/Koda-B8-React
 
 FROM node:alpine AS create
 WORKDIR /create
