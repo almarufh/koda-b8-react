@@ -2,8 +2,8 @@ name: build-project
 run-name: Running build-project
 on:
   push:
-  tags:
-    - v1.0.0
+    tags:
+      - v*
 jobs:
   Build-Project:
     runs-on:  ubuntu-latest
