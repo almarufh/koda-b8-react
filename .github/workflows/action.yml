@@ -71,3 +71,26 @@ jobs:
         with:
           files: |
             99mart-${{ github.ref_name }}.zip
+  build-image:
+    name: "Build image"
+    needs: build-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dist from artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: upload-dist
+          path: files
+      - name: Create nginx Dockerfile
+        run: |
+          cat << 'EOF' > Dockerfile
+          FROM nginx:alpine
+          COPY ./files/dist/ /usr/share/nginx/html
+          COPY ./files/nginx.conf /etc/nginx/conf.d/default.conf
+          EOF
+      - name: Build image
+        run: docker build -t ghcr.io/${{github.actor}}/99mart:latest .
+      - name: Login to ghcr.io
+        run: echo -n ${{secrets.GITHUB_TOKEN}} | docker login ghcr.io --username ${{github.actor}} --password-stdin
+      - name: Push image to ghcr
+        run: docker push ghcr.io/${{github.actor}}/99mart:latest
