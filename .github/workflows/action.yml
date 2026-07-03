@@ -112,4 +112,4 @@ jobs:
           script: |
             docker pull ghcr.io/${{github.actor}}/99mart:latest
             docker rm -f frontend-app || true
-            docker run -d -p 9202:8080 --name frontend-app push ghcr.io/${{github.actor}}/99mart:latestgit s
+            docker run -d -p 9202:8080 --name frontend-app push ghcr.io/${{github.actor}}/99mart:latest
