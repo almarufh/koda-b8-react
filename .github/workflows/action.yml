@@ -54,3 +54,20 @@ jobs:
           path: |
             nginx.conf
             dist/
+  release-app:
+    name: "Release new app version"
+    needs: build-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download files in artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: upload-dist
+          path: files
+      - name: Compress files dist from artifact
+        run: zip -r .files/dist/99mart-${{ github.ref_name }}.zip ./*
+      - name: Release to Github
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            99mart-${{ github.ref_name }}.zip
