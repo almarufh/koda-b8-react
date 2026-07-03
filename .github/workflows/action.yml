@@ -94,3 +94,19 @@ jobs:
         run: echo -n ${{secrets.GITHUB_TOKEN}} | docker login ghcr.io --username ${{github.actor}} --password-stdin
       - name: Push image to ghcr
         run: docker push ghcr.io/${{github.actor}}/99mart:latest
+  deploy-image:
+    name: "Deploy image into server"
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull image from ghcr
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USER}}
+          port: ${{secrets.SSH_PORT}}
+          key: ${{secrets.SSH_KEY}}
+          script: |
+            docker pull ghcr.io/${{github.actor}}/99mart:latest
+            docker rm -f frontend-app || true
+            docker run -d -p 9202:8080 --name frontend-app push ghcr.io/${{github.actor}}/99mart:latestgit s
