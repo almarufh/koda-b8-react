@@ -2,8 +2,10 @@ name: Publish App
 run-name: ${{github.event.head_commit.message}}
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - main
+    # tags:
+    #   - v*
 jobs:
   get-source-code:
     name: "Get source code project"
