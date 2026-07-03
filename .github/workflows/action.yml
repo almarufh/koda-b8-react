@@ -55,7 +55,7 @@ jobs:
           name: upload-dist
           path: |
             nginx.conf
-            dist/s
+            dist/
   release-app:
     name: "Release new app version"
     needs: build-app
