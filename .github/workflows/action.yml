@@ -27,3 +27,30 @@ jobs:
             vite.config.js
             nginx.conf
             eslint.config.js
+  build-app:
+    name: "Build React App into Distributable"
+    needs: get-source-code
+    runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.upload-dist.outputs.artifact-id }}
+    steps:
+      - name: Download source in artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: upload-source
+      - name: Setup node version
+        uses: actions/setup-node@v6
+        with:
+          node-version: "26.4.0"
+      - name: Install nodejs dependencies
+        run: npm install
+      - name: Build app
+        run: npm run build
+      - name: Save results build in artifact
+        uses: actions/upload-artifact@v7
+        id: upload-dist
+        with:
+          name: upload-dist
+          path: |
+            nginx.conf
+            dist/
