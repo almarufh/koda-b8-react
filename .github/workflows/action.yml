@@ -111,5 +111,5 @@ jobs:
           key: ${{secrets.SSH_KEY}}
           script: |
             docker pull ghcr.io/${{github.actor}}/99mart:latest
-            docker rm -f frontend-app || true
-            docker run -d -p 9202:8080 --name frontend-app ghcr.io/${{github.actor}}/99mart:latest 
+            docker rm -f 99mart-app || true
+            docker run -d -p 9202:8080 --name 99mart-app ghcr.io/${{github.actor}}/99mart:latest
