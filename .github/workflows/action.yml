@@ -2,8 +2,8 @@ name: Publish App
 run-name: ${{github.event.head_commit.message}}
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     tags:
       - v*
 jobs:
