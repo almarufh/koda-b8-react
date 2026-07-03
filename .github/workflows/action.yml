@@ -53,7 +53,7 @@ jobs:
           name: upload-dist
           path: |
             nginx.conf
-            dist/
+            dist/s
   release-app:
     name: "Release new app version"
     needs: build-app
@@ -65,7 +65,7 @@ jobs:
           name: upload-dist
           path: files
       - name: Compress files dist from artifact
-        run: zip -r .files/dist/99mart-${{ github.ref_name }}.zip ./*
+        run: zip -r ./99mart-${{ github.ref_name }}.zip ./files/dist/*
       - name: Release to Github
         uses: softprops/action-gh-release@v3
         with:
@@ -75,6 +75,9 @@ jobs:
     name: "Build image"
     needs: build-app
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Download dist from artifact
         uses: actions/download-artifact@v8
@@ -102,7 +105,7 @@ jobs:
       - name: Pull image from ghcr
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{secrets.SSH_HOST}}
+          host: ${{secrets.SSH_SERVER}}
           username: ${{secrets.SSH_USER}}
           port: ${{secrets.SSH_PORT}}
           key: ${{secrets.SSH_KEY}}
