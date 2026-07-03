@@ -2,10 +2,10 @@ name: Publish App
 run-name: ${{github.event.head_commit.message}}
 on:
   push:
-    # branches:
-    #   - main
     tags:
       - v*
+    branches:
+      - main
 jobs:
   get-source-code:
     name: "Get source code project"
@@ -114,4 +114,4 @@ jobs:
           script: |
             docker pull ghcr.io/${{github.actor}}/99mart:latest
             docker rm -f frontend-app || true
-            docker run -d -p 9202:8080 --name frontend-app ghcr.io/${{github.actor}}/99mart:latest
+            docker run -d -p 9202:8080 --name frontend-app ghcr.io/${{github.actor}}/99mart:latest 
